@@ -16,7 +16,7 @@ const RegPage = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:4000/api/v1/user', {
+            const response = await fetch('http://15.206.209.83:4000/api/v1/user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

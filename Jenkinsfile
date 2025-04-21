@@ -6,7 +6,8 @@ pipeline {
         DOCKER_BACKEND_IMAGE = 'shanjithv/backendcicd:latest'
         DOCKERHUB_CREDENTIALS = 'docker-cred'
         AWS_CREDENTIALS = 'aws-cred'
-        EC2_HOST = 'ec2-user@15.206.209.83'
+        EC2_HOST = '15.206.209.83'
+        SSH_KEY_CREDENTIALS = 'ssh-ec2-key'
     }
 
     stages {
@@ -19,7 +20,6 @@ pipeline {
         stage('Docker Build - Frontend') {
             steps {
                 script {
-                    // Building the frontend Docker image, using the path to the Dockerfile inside the frontend directory
                     docker.build(DOCKER_FRONTEND_IMAGE, '-f Frontend/Dockerfile ./Frontend')
                 }
             }
@@ -28,7 +28,6 @@ pipeline {
         stage('Docker Build - Backend') {
             steps {
                 script {
-                    // Building the backend Docker image, using the path to the Dockerfile inside the backend directory
                     docker.build(DOCKER_BACKEND_IMAGE, '-f Backend/Dockerfile ./Backend')
                 }
             }
@@ -37,7 +36,6 @@ pipeline {
         stage('Docker Hub Login and Push Frontend') {
             steps {
                 script {
-                    // Using withCredentials to inject Docker Hub credentials securely
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
@@ -51,7 +49,6 @@ pipeline {
         stage('Docker Hub Login and Push Backend') {
             steps {
                 script {
-                    // Using withCredentials to inject Docker Hub credentials securely
                     withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
@@ -65,10 +62,9 @@ pipeline {
         stage('Deploy Frontend to EC2') {
             steps {
                 script {
-                    // Using AWS credentials to access EC2 and deploy the frontend Docker container
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS]]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: SSH_KEY_CREDENTIALS, keyFileVariable: 'SSH_KEY')]) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
+                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ec2-user@\$EC2_HOST << 'EOF'
                             docker pull $DOCKER_FRONTEND_IMAGE
                             docker stop frontend-container || true
                             docker rm frontend-container || true
@@ -83,10 +79,9 @@ pipeline {
         stage('Deploy Backend to EC2') {
             steps {
                 script {
-                    // Using AWS credentials to access EC2 and deploy the backend Docker container
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS]]) {
+                    withCredentials([sshUserPrivateKey(credentialsId: SSH_KEY_CREDENTIALS, keyFileVariable: 'SSH_KEY')]) {
                         sh """
-                        ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
+                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ec2-user@\$EC2_HOST << 'EOF'
                             docker pull $DOCKER_BACKEND_IMAGE
                             docker stop backend-container || true
                             docker rm backend-container || true

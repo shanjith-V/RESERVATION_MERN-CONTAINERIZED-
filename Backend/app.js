@@ -13,7 +13,7 @@ dotenv.config({ path: "./config/config.env" });
 
 
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from the frontend URL
+    origin: 'http://15.206.209.83:5173', // Allow requests from the frontend URL
     methods: ['GET', 'POST'], // Allow GET and POST methods
     credentials: true, // Allow cookies and credentials to be sent with requests
   }));

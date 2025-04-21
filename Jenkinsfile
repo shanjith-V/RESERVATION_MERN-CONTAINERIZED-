@@ -64,7 +64,7 @@ pipeline {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: SSH_KEY_CREDENTIALS, keyFileVariable: 'SSH_KEY')]) {
                         sh """
-                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ec2-user@\$EC2_HOST << 'EOF'
+                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << 'EOF'
                             docker pull $DOCKER_FRONTEND_IMAGE
                             docker stop frontend-container || true
                             docker rm frontend-container || true
@@ -81,7 +81,7 @@ pipeline {
                 script {
                     withCredentials([sshUserPrivateKey(credentialsId: SSH_KEY_CREDENTIALS, keyFileVariable: 'SSH_KEY')]) {
                         sh """
-                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ec2-user@\$EC2_HOST << 'EOF'
+                        ssh -i \$SSH_KEY -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << 'EOF'
                             docker pull $DOCKER_BACKEND_IMAGE
                             docker stop backend-container || true
                             docker rm backend-container || true

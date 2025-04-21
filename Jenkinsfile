@@ -4,16 +4,16 @@ pipeline {
     environment {
         DOCKER_FRONTEND_IMAGE = 'shanjithv/frontendcicd:latest'
         DOCKER_BACKEND_IMAGE = 'shanjithv/backendcicd:latest'
-        DOCKERHUB_CREDENTIALS = 'docker-cred'      // Jenkins credential ID for Docker Hub (username/password)
-        AWS_CREDENTIALS = 'aws-cred'               // (Unused in this pipeline, keep if needed)
-        EC2_HOST = '15.206.209.83'                 // Your EC2 instance IP
-        SSH_KEY_CREDENTIALS = 'ssh-ec2-key'        // Jenkins SSH private key credential ID
+        DOCKERHUB_CREDENTIALS = 'docker-cred'
+        AWS_CREDENTIALS = 'aws-cred'
+        EC2_HOST = '15.206.209.83'
+        SSH_KEY_CREDENTIALS = 'ssh-ec2-key'
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
+                git branch: 'main', url:'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
             }
         }
 
@@ -36,10 +36,10 @@ pipeline {
         stage('Docker Hub Login and Push Frontend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
-                            echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
-                            docker push $DOCKER_FRONTEND_IMAGE
+                        echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
+                        docker push $DOCKER_FRONTEND_IMAGE
                         """
                     }
                 }
@@ -49,10 +49,10 @@ pipeline {
         stage('Docker Hub Login and Push Backend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
-                            echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
-                            docker push $DOCKER_BACKEND_IMAGE
+                        echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
+                        docker push $DOCKER_BACKEND_IMAGE
                         """
                     }
                 }
@@ -63,12 +63,12 @@ pipeline {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS]) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << 'EOF'
-                            docker pull $DOCKER_FRONTEND_IMAGE
-                            docker stop frontend-container || true
-                            docker rm frontend-container || true
-                            docker run -d -p 5173:5173 --name frontend-container $DOCKER_FRONTEND_IMAGE
-                        EOF
+                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << 'EOF'
+                        docker pull $DOCKER_FRONTEND_IMAGE
+                        docker stop frontend-container || true
+                        docker rm frontend-container || true
+                        docker run -d -p 5173:5173 --name frontend-container $DOCKER_FRONTEND_IMAGE
+                    EOF
                     """
                 }
             }
@@ -78,12 +78,12 @@ pipeline {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS]) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << 'EOF'
-                            docker pull $DOCKER_BACKEND_IMAGE
-                            docker stop backend-container || true
-                            docker rm backend-container || true
-                            docker run -d -p 4000:4000 --name backend-container $DOCKER_BACKEND_IMAGE
-                        EOF
+                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << 'EOF'
+                        docker pull $DOCKER_BACKEND_IMAGE
+                        docker stop backend-container || true
+                        docker rm backend-container || true
+                        docker run -d -p 4000:4000 --name backend-container $DOCKER_BACKEND_IMAGE
+                    EOF
                     """
                 }
             }

@@ -37,7 +37,7 @@ pipeline {
         stage('Docker Hub Login and Push Frontend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId:DOCKERHUB_CREDENTIALS , usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS' , usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_FRONTEND_IMAGE
@@ -50,7 +50,7 @@ pipeline {
         stage('Docker Hub Login and Push Backend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_BACKEND_IMAGE

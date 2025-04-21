@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     // Using AWS credentials to access EC2 and deploy the frontend Docker container
-                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: AWS_CREDENTIALS]]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS]]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_FRONTEND_IMAGE
@@ -84,7 +84,7 @@ pipeline {
             steps {
                 script {
                     // Using AWS credentials to access EC2 and deploy the backend Docker container
-                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: AWS_CREDENTIALS]]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS]]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_BACKEND_IMAGE

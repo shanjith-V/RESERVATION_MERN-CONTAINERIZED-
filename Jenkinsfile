@@ -37,7 +37,7 @@ pipeline {
         stage('Docker Hub Login and Push Frontend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: docker-cred, usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
+                    withCredentials([usernamePassword(credentialsId:DOCKERHUB_CREDENTIALS , usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_FRONTEND_IMAGE
@@ -50,7 +50,7 @@ pipeline {
         stage('Docker Hub Login and Push Backend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: docker-cred, usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
+                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_BACKEND_IMAGE
@@ -63,7 +63,7 @@ pipeline {
         stage('Deploy Frontend to EC2') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: aws-cred]]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: AWS_CREDENTIALS ]]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_FRONTEND_IMAGE
@@ -80,7 +80,7 @@ pipeline {
         stage('Deploy Backend to EC2') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: aws-cred]]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: AWS_CREDENTIALS]]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_BACKEND_IMAGE

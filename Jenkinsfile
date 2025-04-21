@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_FRONTEND_IMAGE = 'shanjithv/frontendCICD:latest'
-        DOCKER_BACKEND_IMAGE = 'shanjithv/backendCICD:latest'
+        DOCKER_FRONTEND_IMAGE = 'shanjithv/frontendcicd:latest'
+        DOCKER_BACKEND_IMAGE = 'shanjithv/backendcicd:latest'
         DOCKERHUB_CREDENTIALS = 'docker-cred'
         AWS_CREDENTIALS = 'aws-cred'
         EC2_HOST = 'ec2-user@15.206.209.83'

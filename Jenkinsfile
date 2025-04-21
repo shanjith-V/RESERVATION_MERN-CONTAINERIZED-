@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // Building the frontend Docker image, using the path to the Dockerfile inside the frontend directory
-                    docker.build(DOCKER_FRONTEND_IMAGE, '-f Frontend/Dockerfile .')
+                    docker.build(DOCKER_FRONTEND_IMAGE, '-f Frontend/Dockerfile ./Frontend')
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
             steps {
                 script {
                     // Building the backend Docker image, using the path to the Dockerfile inside the backend directory
-                    docker.build(DOCKER_BACKEND_IMAGE, '-f Backend/Dockerfile .')
+                    docker.build(DOCKER_BACKEND_IMAGE, '-f Backend/Dockerfile ./Backend')
                 }
             }
         }

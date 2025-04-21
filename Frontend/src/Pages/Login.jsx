@@ -42,8 +42,8 @@ const Login = () => {
     <div className="LOGIN">
       <div className="loginPage">
         <h2 className="head">Sign in for faster checkout.</h2>
-        <h3 className="idapp">Apple ID</h3>
-        <h4 className="header">Sign in to Apple Store</h4>
+        <h3 className="idapp">LOGIN ID</h3>
+        <h4 className="header">Sign in to  Store</h4>
 
         <div className="LOGO">
           <img src={LOGINIMG} alt="Apple Sign In Logo" />
@@ -81,7 +81,7 @@ const Login = () => {
           </button>
         </form>
 
-        <h5 className="foot">Do not have an Apple ID?</h5>  
+        <h5 className="foot">Do not have an  ID?</h5>  
         <div className="regpage">
           <Link to="/user">Create yours now.</Link>  {/* Already redirects to RegPage */}
         </div>

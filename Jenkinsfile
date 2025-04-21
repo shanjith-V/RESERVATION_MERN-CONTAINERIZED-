@@ -62,14 +62,14 @@ pipeline {
         stage('Deploy Frontend to EC2') {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS]) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST << EOF
-                        docker pull $DOCKER_FRONTEND_IMAGE
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST "
+                        docker pull shanjithv/frontendcicd:latest
                         docker stop frontendcicd-container || true
                         docker rm frontendcicd-container || true
-                        docker run -d -p 5173:5173 --name frontendcicd-container $DOCKER_FRONTEND_IMAGE
-                    EOF
-                    """
+                        docker run -d -p 5173:5173 --name frontendcicd-container shanjithv/frontendcicd:latest
+                    "
+                    '''
                 }
             }
         }
@@ -77,14 +77,14 @@ pipeline {
         stage('Deploy Backend to EC2') {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS]) {
-                    sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<- EOF
-                        docker pull $DOCKER_BACKEND_IMAGE
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST "
+                        docker pull shanjithv/backendcicd:latest
                         docker stop backendcicd-container || true
                         docker rm backendcicd-container || true
-                        docker run -d -p 4000:4000 --name backendcicd-container $DOCKER_BACKEND_IMAGE
-                    EOF
-                    """
+                        docker run -d -p 4000:4000 --name backendcicd-container shanjithv/backendcicd:latest
+                    "
+                    '''
                 }
             }
         }

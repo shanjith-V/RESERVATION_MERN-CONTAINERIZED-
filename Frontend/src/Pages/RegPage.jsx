@@ -45,10 +45,10 @@ const RegPage = () => {
                 <video src={SIGNFR} autoPlay loop muted></video>
             </div>
             <div className="hds">
-                <h3>Create Your Apple ID</h3>
+                <h3>Create Your  ID</h3>
             </div>
             <div className="hs">
-                <h3>One Apple ID is all you need to access all Apple services.</h3>
+                <h3>One Account, All Your Restaurant Needs: Seamless Reservations, Orders, and Dining Experiences.</h3>
             </div>
             <div className="signin-container">
                 <div className="signin-input-container">

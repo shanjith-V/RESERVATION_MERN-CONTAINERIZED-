@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', 'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
+                git branch: 'main', url:'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
             }
         }
 

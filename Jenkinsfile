@@ -12,13 +12,14 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url: 'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
+                git branch: 'main', url:'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
             }
         }
 
         stage('Docker Build - Frontend') {
             steps {
                 script {
+                    // Building the frontend Docker image, using the path to the Dockerfile inside the frontend directory
                     docker.build(DOCKER_FRONTEND_IMAGE, '-f Frontend/Dockerfile ./Frontend')
                 }
             }
@@ -27,6 +28,7 @@ pipeline {
         stage('Docker Build - Backend') {
             steps {
                 script {
+                    // Building the backend Docker image, using the path to the Dockerfile inside the backend directory
                     docker.build(DOCKER_BACKEND_IMAGE, '-f Backend/Dockerfile ./Backend')
                 }
             }
@@ -35,7 +37,8 @@ pipeline {
         stage('Docker Hub Login and Push Frontend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    // Using withCredentials to inject Docker Hub credentials securely
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_FRONTEND_IMAGE
@@ -48,7 +51,8 @@ pipeline {
         stage('Docker Hub Login and Push Backend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: DOCKERHUB_CREDENTIALS, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                    // Using withCredentials to inject Docker Hub credentials securely
+                    withCredentials([usernamePassword(credentialsId: 'DOCKERHUB_CREDENTIALS', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_BACKEND_IMAGE
@@ -61,7 +65,8 @@ pipeline {
         stage('Deploy Frontend to EC2') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS]]) {
+                    // Using AWS credentials to access EC2 and deploy the frontend Docker container
+                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: AWS_CREDENTIALS]]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_FRONTEND_IMAGE
@@ -78,7 +83,8 @@ pipeline {
         stage('Deploy Backend to EC2') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: AWS_CREDENTIALS]]) {
+                    // Using AWS credentials to access EC2 and deploy the backend Docker container
+                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: AWS_CREDENTIALS]]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_BACKEND_IMAGE

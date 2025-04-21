@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', url:'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
+                git branch: 'main', url: 'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
             }
         }
 
@@ -63,7 +63,7 @@ pipeline {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<  EOF
+                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<- EOF
                         docker pull $DOCKER_FRONTEND_IMAGE
                         docker stop frontend-container || true
                         docker rm frontend-container || true
@@ -78,7 +78,7 @@ pipeline {
             steps {
                 sshagent([SSH_KEY_CREDENTIALS]) {
                     sh """
-                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<  EOF
+                    ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<- EOF
                         docker pull $DOCKER_BACKEND_IMAGE
                         docker stop backend-container || true
                         docker rm backend-container || true

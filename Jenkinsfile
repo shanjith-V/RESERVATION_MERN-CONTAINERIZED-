@@ -65,8 +65,8 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<- EOF
                         docker pull $DOCKER_FRONTEND_IMAGE
-                        docker stop frontend-container || true
-                        docker rm frontend-container || true
+                        docker stop frontendcicd-container || true
+                        docker rm frontendcicd-container || true
                         docker run -d -p 5173:5173 --name frontendcicd-container $DOCKER_FRONTEND_IMAGE
                     EOF
                     """
@@ -80,8 +80,8 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@\$EC2_HOST <<- EOF
                         docker pull $DOCKER_BACKEND_IMAGE
-                        docker stop backend-container || true
-                        docker rm backend-container || true
+                        docker stop backendcicd-container || true
+                        docker rm backendcicd-container || true
                         docker run -d -p 4000:4000 --name backendcicd-container $DOCKER_BACKEND_IMAGE
                     EOF
                     """

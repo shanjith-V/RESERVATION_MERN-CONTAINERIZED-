@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
+                git branch: 'main', url: 'https://github.com/shanjith-V/RESERVATION_MERN-CONTAINERIZED-.git'
             }
         }
 
@@ -35,7 +35,7 @@ pipeline {
         stage('Docker Hub Login and Push Frontend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: docker-cred, usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_FRONTEND_IMAGE
@@ -48,7 +48,7 @@ pipeline {
         stage('Docker Hub Login and Push Backend') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: docker-cred, usernameVariable: 'shanjithv', passwordVariable: 'sanjulathi0810')]) {
+                    withCredentials([usernamePassword(credentialsId: 'docker-cred', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         echo \$DOCKER_PASSWORD | docker login -u \$DOCKER_USERNAME --password-stdin
                         docker push $DOCKER_BACKEND_IMAGE
@@ -61,7 +61,7 @@ pipeline {
         stage('Deploy Frontend to EC2') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: aws-cred]]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: 'aws-cred']]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_FRONTEND_IMAGE
@@ -78,7 +78,7 @@ pipeline {
         stage('Deploy Backend to EC2') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: aws-cred]]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentials', credentialsId: 'aws-cred']]) {
                         sh """
                         ssh -o StrictHostKeyChecking=no \$EC2_HOST << 'EOF'
                             docker pull $DOCKER_BACKEND_IMAGE

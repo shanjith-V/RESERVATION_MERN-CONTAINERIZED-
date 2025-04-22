@@ -1,30 +1,53 @@
-Docker Life Cycle
+# 🐳 Docker Life Cycle & Installation Guide
 
-There are three important things,
+## 📦 Docker Life Cycle
 
-docker build -> builds docker images from Dockerfile
-docker run -> runs container from docker images
-docker push -> push the container image to public/private regestries to share the docker images.
+There are three important Docker commands in the container workflow:
 
+- **docker build**: Builds Docker images from a Dockerfile.
+- **docker run**: Runs a container from Docker images.
+- **docker push**: Pushes the container image to public/private registries to share Docker images.
 
-INSTALL DOKCER
+---
 
-sudo apt update
-sudo apt install docker.io -y
+## 🛠️ Install Docker on Ubuntu
 
-sudo systemctl status docker
-sudo systemctl start docker
+To install Docker on an Ubuntu-based system, follow these steps:
 
-sudo usermod -aG docker ubuntu
+1. Update the package list:
+   - `sudo apt update`
 
-docker login
+2. Install Docker:
+   - `sudo apt install docker.io -y`
 
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-Username: shanjithv
-Password:
-WARNING! Your password will be stored unencrypted in /home/ubuntu/.docker/config.json.
-Configure a credential helper to remove this warning. See
-https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+3. Check the Docker service status:
+   - `sudo systemctl status docker`
 
-Login Succeeded
+4. Start the Docker service if it's not running:
+   - `sudo systemctl start docker`
 
+5. Add your current user to the Docker group to use Docker without `sudo`:
+   - `sudo usermod -aG docker ubuntu`
+
+---
+
+## 🔐 Docker Hub Login
+
+Use the `docker login` command to authenticate with Docker Hub.
+
+Login with your Docker ID to push and pull images from Docker Hub.  
+If you don't have a Docker ID, you can create one at: [https://hub.docker.com](https://hub.docker.com)
+
+- **Username**: `shanjithv`
+- **Password**: *(your Docker Hub password)*
+
+> ⚠️ **Warning**:  
+> Your password will be stored unencrypted in `/home/ubuntu/.docker/config.json`.  
+> To remove this warning, configure a credential helper.  
+> [Learn how to configure credential store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store)
+
+✅ **Login Succeeded**
+
+---
+
+Now you're all set to build, run, and push Docker containers! 🚀

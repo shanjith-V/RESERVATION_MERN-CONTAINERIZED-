@@ -169,7 +169,19 @@ Sample pipeline steps (declarative or scripted):
 
 ## 📁 Folder Structure (Suggested)
 
-/mern-reservation-app ├── frontend │ └── Dockerfile ├── backend │ └── Dockerfile ├── jenkins │ └── Jenkinsfile └── README.md
+## 📁 Folder Structure (Suggested)
+
+```
+/mern-reservation-app
+├── frontend
+│   └── Dockerfile
+├── backend
+│   └── Dockerfile
+├── jenkins
+│   └── Jenkinsfile
+└── README.md
+```
+
 
 
 

@@ -187,11 +187,7 @@ Sample pipeline steps (declarative or scripted):
 
 ---
 
-## ✅ Final Notes
 
-- Ensure that the Docker Hub repo is **public** or your Jenkins credentials allow **private repo access**
-- Use `docker-compose` if you'd like to simplify multi-container deployment
-- Secure your Jenkins server by allowing only your IP or VPN in the EC2 security group
 
 ---
 

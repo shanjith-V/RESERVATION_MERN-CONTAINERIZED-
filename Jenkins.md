@@ -1,46 +1,88 @@
-Install Jenkins
+# ⚙️ Install Jenkins on AWS EC2
 
-sudo apt update
-sudo apt install openjdk-17-jre
+## ☁️ EC2 Setup for Jenkins
 
-you can proceed with installing Jenkins
+1. Go to **EC2 > Instances**, and click on your instance.
+2. In the bottom tabs, click **Security**, then **Security groups**.
+3. Edit inbound rules:
+   - Add a **Custom TCP Rule** with **Port 8080** and **Source: 0.0.0.0/0** (or restrict to your IP for security).
 
-curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update
-sudo apt-get install jenkins
+---
 
+## ☕ Install Java (Jenkins Requirement)
 
-EC2 > Instances > Click on
-In the bottom tabs -> Click on Security
-Security groups
-Add inbound traffic rules as shown in the image (you can just allow TCP 8080 as well, in my case, I allowed All traffic).
+- `sudo apt update`
+- `sudo apt install openjdk-17-jre`
 
-After you login to Jenkins, - Run the command to copy the Jenkins Admin Password - sudo cat /var/lib/jenkins/secrets/initialAdminPassword - Enter the Administrator password
+---
 
+## 📥 Install Jenkins
 
-Install the Docker Pipeline plugin in Jenkins:
-
-Log in to Jenkins.
-Go to Manage Jenkins > Manage Plugins.
-In the Available tab, search for "Docker Pipeline".
-Select the plugin and click the Install button.
-Restart Jenkins after the plugin is installed.
-
-Docker Slave Configuration:
+1. Add the Jenkins repository and key:
 
 
-sudo apt update
-sudo apt install docker.io
+2. Update and install Jenkins:
 
-Grant Jenkins user and Ubuntu user permission to docker deamon:
-sudo su - 
-usermod -aG docker jenkins
-usermod -aG docker ubuntu
-systemctl restart docker
+- `sudo apt-get update`
+- `sudo apt-get install jenkins`
 
+---
 
-http://<ec2-instance-public-ip>:8080/restart
+## 🔑 Get Jenkins Admin Password
+
+After Jenkins is installed, retrieve the initial admin password using:
+
+- `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
+
+Use this password to unlock Jenkins at:  
+**`http://<EC2-Public-IP>:8080`**
+
+---
+
+## 🔌 Install Docker Pipeline Plugin
+
+1. Log in to Jenkins.
+2. Navigate to **Manage Jenkins > Manage Plugins**.
+3. Go to the **Available** tab and search for `"Docker Pipeline"`.
+4. Select it and click **Install without restart**.
+5. After installation, restart Jenkins.
+
+---
+
+## 🐳 Docker Setup for Jenkins
+
+Install Docker:
+
+- `sudo apt update`
+- `sudo apt install docker.io`
+
+---
+
+### 👥 Add Jenkins and Ubuntu Users to Docker Group
+
+To allow Jenkins and Ubuntu to access Docker:
+
+1. Switch to root:
+
+- `sudo su -`
+
+2. Add users to the Docker group:
+
+- `usermod -aG docker jenkins`
+- `usermod -aG docker ubuntu`
+
+3. Restart Docker:
+
+- `systemctl restart docker`
+
+---
+
+## 🔁 Restart Jenkins
+
+You can restart Jenkins by visiting:
+
+**`http://<EC2-Public-IP>:8080/restart`**
+
+---
+
+Now Jenkins is ready for CI/CD pipelines using Docker! 🚀

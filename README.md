@@ -1,10 +1,10 @@
-# 🍽️ MERN Reservation App - CI/CD Deployment with Jenkins, Docker, and AWS
+#  MERN Reservation App - CI/CD Deployment with Jenkins, Docker, and AWS
 
 This project demonstrates a complete DevOps workflow to automate the deployment of a MERN stack-based restaurant reservation application using **Jenkins**, **Docker**, and **AWS EC2**.
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 - **Frontend**: React.js (Port 5173)
 - **Backend**: Node.js + Express.js (Port 4000)
@@ -15,7 +15,7 @@ This project demonstrates a complete DevOps workflow to automate the deployment 
 
 ---
 
-## 📦 Docker Life Cycle
+##  Docker Life Cycle
 
 There are three important Docker commands in the workflow:
 
@@ -25,7 +25,7 @@ There are three important Docker commands in the workflow:
 
 ---
 
-## 🐳 Install Docker
+##  Install Docker
 
 1. Update and install Docker:
 
@@ -56,12 +56,12 @@ There are three important Docker commands in the workflow:
     - Username: `shanjithv`
     - Password: *(your Docker Hub password)*
 
-    > ⚠️ Your password will be stored unencrypted in `/home/ubuntu/.docker/config.json`.  
+    >  Your password will be stored unencrypted in `/home/ubuntu/.docker/config.json`.  
     > Use [credential store](https://docs.docker.com/engine/reference/commandline/login/#credentials-store) for security.
 
 ---
 
-## ⚙️ Install Jenkins on AWS EC2
+##  Install Jenkins on AWS EC2
 
 ### EC2 Setup
 
@@ -105,7 +105,7 @@ There are three important Docker commands in the workflow:
 
 ---
 
-## 🔌 Install Docker Pipeline Plugin
+##  Install Docker Pipeline Plugin
 
 1. Go to **Manage Jenkins > Manage Plugins**
 2. Search for **Docker Pipeline** under **Available**
@@ -113,7 +113,7 @@ There are three important Docker commands in the workflow:
 
 ---
 
-## 👥 Configure Jenkins for Docker
+##  Configure Jenkins for Docker
 
 1. Install Docker on Jenkins server:
 
@@ -132,7 +132,7 @@ There are three important Docker commands in the workflow:
 
 ---
 
-## 🔐 Jenkins Credentials Setup
+##  Jenkins Credentials Setup
 
 In **Manage Jenkins > Credentials**, add:
 
@@ -142,7 +142,7 @@ In **Manage Jenkins > Credentials**, add:
 
 ---
 
-## 🔄 CI/CD Pipeline Overview
+##  CI/CD Pipeline Overview
 
 Your Jenkins pipeline should:
 
@@ -160,16 +160,16 @@ Sample pipeline steps (declarative or scripted):
 
 ---
 
-## 📡 Deployment Output
+##  Deployment Output
 
 - Frontend: [http://15.206.209.83:5173](http://15.206.209.83:5173)
 - Backend: [http://15.206.209.83:4000](http://15.206.209.83:4000)
 
 ---
 
-## 📁 Folder Structure (Suggested)
+##  Folder Structure (Suggested)
 
-## 📁 Folder Structure (Suggested)
+##  Folder Structure (Suggested)
 
 ```
 /mern-reservation-app
@@ -191,7 +191,7 @@ Sample pipeline steps (declarative or scripted):
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Shanjith V**  
 DevOps Enthusiast | AWS | Docker | Jenkins | GitHub Actions | MERN
